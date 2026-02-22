@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CMHS WALL</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<style>
+body{font-family:'Bookman Old Style', serif; background:#D3E7FF; margin:0;}
+.exam-container{max-width:2000px; margin:20px auto; background:#FFFFFF; padding:20px; border-radius:80px;}
+h2{color:#0b5394;font-size:clamp(1.6rem, 4.2vw, 4.4rem);}
+h3{color:#0b5394;font-size:clamp(1.8rem, 5vw, 6.25rem);}
+p,label,b,li,a{font-size:clamp(1rem, 3vw, 3.6rem);}
+input[type="radio"]{width:clamp(18px, 2.1vw, 30px); height:clamp(18px, 2.1vw, 30px); margin-right:12px; vertical-align:middle; cursor:pointer;}
+button{background:#1A5D97; color:white; padding:clamp(10px, 1.8vw, 25px) clamp(14px, 2vw, 25px); font-size:clamp(1rem, 2.6vw, 3rem); border:none; border-radius:50px; cursor:pointer;}
+.hidden{display:none;}
+.upload-area{border:8px dashed #0b5394; padding:clamp(24px, 6vw, 100px); border-radius:50px; text-align:center; font-size:clamp(1rem, 3.2vw, 3.75rem); margin-top:20px;}
+#answerContent p{font-size:clamp(1rem, 2.6vw, 3.2rem); margin-bottom:15px;}
+a{color:white; font-size:clamp(1rem, 2.6vw, 3.1rem);}
+
+/* QUIZ IMAGE + CHOICE RESPONSIVENESS */
+.question{
+  margin-bottom:22px;
+}
+.question p{
+  overflow-wrap:anywhere;
+}
+.choice-option{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  margin:12px 0;
+  line-height:1.2;
+}
+.choice-option img{
+  display:block;
+  width:min(220px, 100%) !important;
+  max-width:100% !important;
+  height:auto !important;
+  object-fit:contain;
+  border-radius:12px;
+}
+.question p img,
+#answerContent img{
+  display:block;
+  max-width:100% !important;
+  width:auto;
+  height:auto !important;
+  object-fit:contain;
+  margin-top:10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px){
+  h2{font-size:50px;}
+  h3{font-size:70px;}
+  p,label,b,li,a{font-size:40px;}
+  input[type="radio"]{width:24px; height:24px; margin-right:12px;}
+  button{font-size:36px; padding:20px 20px; border-radius:40px;}
+  .upload-area{padding:60px; font-size:40px; border-radius:40px;}
+  #answerContent p{font-size:40px;}
+  .choice-option{gap:10px;}
+  .choice-option img{width:min(180px, 100%) !important;}
+}
+@media (max-width: 600px){
+  h2{font-size:35px;}
+  h3{font-size:50px;}
+  p,label,b,li,a{font-size:28px;}
+  input[type="radio"]{width:20px; height:20px; margin-right:10px;}
+  button{font-size:28px; padding:15px 15px; border-radius:30px;}
+  .upload-area{padding:40px; font-size:28px; border-radius:30px;}
+  #answerContent p{font-size:28px;}
+  .exam-container{margin:10px; padding:14px; border-radius:30px;}
+  .choice-option{gap:8px; margin:10px 0;}
+  .choice-option img{width:min(130px, 100%) !important;}
+}
+@media (orientation: landscape) and (max-height: 500px){
+  h2{font-size:clamp(1.2rem, 2.8vw, 2rem);}
+  p,label,b,li,a{font-size:clamp(0.95rem, 1.9vw, 1.25rem);}
+  .upload-area{padding:20px;}
+}
+</style>
+</head>
+
+<body class="py-2 py-md-3">
+
+<div class="container exam-container shadow-sm">
+
+<div id="home">
+<h2>📢 Announcement</h2>
+<p>Grade 7 and 11 Entrance Examination</p>
+<p>📆February 21, 2026</p>
+
+<h2>📄Requirements</h2>
+<ul>
+<li>PSA / Birth Certificate</li>
+<li>Good Moral Certificate</li>
+<li>Recent Report Card (EnSciMa Grades ≥ 90)</li>
+</ul>
+
+<div class="upload-area">
+  <h2>📤Upload Required Documents</h2>
+  <p>Please submit the required documents:</p>
+  <a href="https://forms.gle/UtduxKkUkvs5Leu48" target="_blank"
+  style="display:inline-block; background-color:#0b5394; padding:20px 40px; border-radius:50px; text-decoration:none;">
+  Upload Files</a>
+</div>
+
+<br>
+<button onclick="startExam()">Start Mock Exam</button>
+</div>
+
+<div id="examSection" class="hidden">
+<h2>Mock Examination</h2>
+<div id="exam"></div>
+<div class="text-center mt-3">
+  <button id="nextBtn" onclick="nextPage()">Next Page</button>
+</div>
+</div>
+
+</div>
+
+<div id="answerPopup" class="hidden"
+style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); overflow:auto; z-index:9999;">
+  <div class="container bg-white p-3 p-md-4 rounded-4 my-4" style="max-width:1000px;">
+    <h2 style="color:#0b5394;text-align:center;">Answer Key</h2>
+    <div id="answerContent"></div>
+    <div id="finalScore" style="text-align:center; font-size:50px; margin-top:20px;"></div>
+    <div style="text-align:center; margin-top:20px;">
+      <button onclick="exitExam()">Exit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================= SHUFFLE =================
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+}
+
+// ================= QUESTIONS =================
+const questions=[
+// ... existing questions 1-40 ...
+{
+  q: "Which piece below, when fitted into the piece on the left, will form a perfect square?<br><img src='/Screenshot 2026-02-22 112645.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+  c: [
+    "<img src='/Screenshot 2026-02-22 112835.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 113128.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 113353.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 113459.png' width='150'> "
+  ],
+  a: 1},
+{q:"Which word in brackets is most opposite to the word in capitals ? PROSCRIBE",c:["allow","stifle","promote","verify"],a:0},
+{q:"0, 1, 2, 4, 6, 9, 12, 16, ? What number should replace the question mark ?",c:["18","20","21","22"],a:1},
+{q:"Which number is the odd one out?",c:["9678","4572","5261","5133"],a:2},
+{q:"Isotherm is to temperature as isobar is to:",c:["atmosphere","wind","pressure","current"],a:2},
+{
+  q:"Which is the missing section?<br><img src='/Screenshot 2026-02-22 122948.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+  c: [
+    "<img src='/Screenshot 2026-02-22 123001.png'> ",
+    "<img src='/Screenshot 2026-02-22 123013.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 123022.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 123028.png' width='150'> "
+  ],
+  a:2},
+{
+  q:"Which is the odd one out?",
+  c: [
+    "<img src='/Screenshot 2026-02-22 131653.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 131706.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 131706.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 131741.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 131825.png' width='150'> "
+  ],
+  a:4},
+{ q: "Identify a word that have a connection(analogy) with the word KNOT", c: ["water", "rope", "speed", "scales"], a: 2},
+{q:"Each number in the pyramid is the sum of the two numbers immediately below it.Fill in the pyramid with the missing numbers.<br><img src='/Screenshot 2026-02-22 133530.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+c: ["68","72","76","80"],a:2},
+{
+  q:"Which is the odd one out?",
+    c: [
+    "<img src='/Screenshot 2026-02-22 134347.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 134405.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 134412.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 134430.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 134447.png' width='150'> "
+  ],
+  a:1},
+{q:"How many minutes is it before 12 noon, if 48 minutes ago it was twice as many minutes past 9 am?",c:["40 mins","44 mins","48 mins","52 mins"],a:1},
+{q:"What planet is known as the Red Planet?",c:["Mercury","Mars","Jupiter","Saturn"],a:1},
+{q:"Which is the odd one out",c:["Heptagon","Hexagon","Cube","Pentagon"],a:2},
+{q:"Switch A turns lights 1 and 2 on / off or off / on. Switch B turns lights 2 and 4 on / off or off / on. Switch C turns lights 1 and 3 on / off or off / on.<br><img src='/Screenshot 2026-02-22 135952.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+c:["Swith A","Switch B","Switch C"],a:1},
+{q: "Which is the missing Tile?<br><img src='/Screenshot 2026-02-22 140400.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+  c: [
+    "<img src='/Screenshot 2026-02-22 140407.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 140413.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 140420.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 140448.png' width='150'> "
+  ],a: 3},
+{q:"Which word in brackets is closest in meaning to the word in capitals ? BRUNT",c:["dull","edifice","impact","tawny"],a:2},
+{q:"Which is NOT an anagram of a food?",c:["PAST EIGHT","I CAN ROAM","WIN BOAR","CAN PEAK"],a:1},
+{q: "What number should replace the question mark ?<br><img src='/Screenshot 2026-02-22 154103.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+c:["7","8","9","10"],a:2},
+{q: "Work from square to adjacent square horizontally or vertically(but not diagonally) to spell out a 12 - letter word.You must find the starting point, and provide the missing letters.<br><img src='/Screenshot 2026-02-22 154654.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+c:["FLUORESCENT","FLUORESCENCE","FLOURISH","FLOWER"],a:1},
+{q: "How many lines appear below?<br><img src='/Screenshot 2026-02-22 160105.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+c:["9","10","11","12"],a:2},
+{q: "Which is the missing Tile?<br><img src='/Screenshot 2026-02-22 161610.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+  c: [
+    "<img src='/Screenshot 2026-02-22 161628.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 161636.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 161646.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 161655.png' width='150'> "
+  ],a: 3},
+{q: "What number should replace the question mark?<br><img src='/Screenshot 2026-02-22 162436.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+ c: [
+    "<img src='/Screenshot 2026-02-22 162840.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 162845.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 162850.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 162854.png' width='150'> "
+  ],a: 2},
+{q: "Work clockwise round the circles to spell out two eight - letter words that are synonyms.Each word commences in a different circle, and you must find the starting point of each.Every letter is used once each and all letters are consecutive.<br><img src='/Screenshot 2026-02-22 164616.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+c:["PUGNACIOUS","GLORIOUS","Both A & B","Neither"],a:2},
+{q:"10, 30, 32, 96, 98, 294, 296, ? , ?What two numbers should replace the question marks ?",c:["888, 890","880, 882","890, 892","900, 902"],a:0},
+{q:"able, rot, son, king Which word below shares a common feature with all the words above ?",c:["Night","Light","Sight","Fight"],a:0},
+{q:"Identify one word that have a connection (analogy) with the word in capitals and relate in the same way.SNOW ",c:["Mountain","Ice","Skier","Cold"],a:2},
+{q:"Which word meaning LOCALITY becomes a word meaning TEMPO when a letter is removed ?",c:["Plane","Place","Plate","Plant"],a:1},
+{q:"Alf has four times as many as Jim, and Jim has three times as many as Sid. Altogether they have 192. How many has each ?",c:["144, 36, 12","120, 40, 32","150, 30, 12","140, 40, 12"],a:0},
+{q:"Which is the only one of the following that is not an anagram of a word meaning out of this world ?",c:["Flow Under","Sexed Utah","Inviable Blue","Icier Blend"],a:2},
+{q:"A man has 53 socks in his drawer: 21 identical blue, 15 identical black and 17 identical red.The lights are fused and he is completely in the dark.How many socks must he take out to make 100 per cent certain he has a pair of black socks ?",c:["38","15","21","40"],a:3},
+{q: "Select the missing figure in the above sequence.<br><img src='/Screenshot 2026-02-22 165843.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+ c: [
+    "<img src='/Screenshot 2026-02-22 165848.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 165854.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 165903.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 165911.png' width='150'> "
+  ],a: 3},
+{q:"How many minutes is it before 12 noon if nine minutes ago it was twice as many minutes past 10 am?",c:["35","37","39","41"],a:1},
+{q:"Which two words are closest in meaning ?",c:["Medley","Conclave","conglomeration","Both A & C"],a:3},
+{q:"broke rage prose cute dared _____? Which word is missing?",c:["Palm","Hymn","Evil","Snow"],a:2},
+{q:"Find five consecutive numbers below that total 22.",c:["7,3,9,6,4","9,3,5,4,1","1,3,7,9,3","4,1,3,7,9"],a:1},
+{q: "To which hexagon below can a dot be added so that both dots then meet the same conditions as the two dots in the hexagon above ?.<br><img src='/Screenshot 2026-02-22 172624.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+ c: [
+    "<img src='/Screenshot 2026-02-22 172636.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 172644.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 172652.png' width='150'> ",
+    "<img src='/Screenshot 2026-02-22 172714.png' width='150'> "
+  ],a: 1},
+{q: "Find two words(4, 6) in this diagram.Letters are traced across the circle by chords.If the next letter is four letters or less away it will be found by tracing around the circumference.<br><img src='/Screenshot 2026-02-22 173041.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+c:["Free Flight","Fast Plane","Blue Bird","High Kite"],a:0},
+
+{q: "What letter is directly opposite the letter that is two letters away clockwise from the letter that is directly opposite the letter E ?.<br><img src='/Screenshot 2026-02-22 173520.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+c:["E","F","G","H"],a:2},
+
+{q: "What number should replace the question mark?.<br><img src='/Screenshot 2026-02-22 173708.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+c:["4","5","6","7"],a:2},
+
+{q: "Which is the missing section?.<br><img src='/Screenshot 2026-02-22 174350.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+ c: [
+    "<img src='Screenshot 2026-02-22 174804.png' width='150'> ",
+    "<img src='Screenshot 2026-02-22 174817.png' width='150'> ",
+    "<img src='Screenshot 2026-02-22 174830.png' width='150'> ",
+    "<img src='Screenshot 2026-02-22 174836.png' width='150'> "
+  ],a: 0},
+];
+
+let currentPage = 0;
+const questionsPerPage = 3;
+let correct=[];
+let totalPages = Math.ceil(questions.length / questionsPerPage);
+let userAnswers = [];
+
+// Keep image links working from nested folders and keep img attrs responsive.
+function normalizeImageHtml(html){
+  return html
+    .replace(
+      /<img\b([^>]*?)src=(['"])\s*(?:\.\/)?\/?(Screenshot[^'"]+)\2([^>]*)>/gi,
+      "<img$1src=$2image/Screenshots/$3$2$4>"
+    )
+    .replace(/<img\b(?![^>]*\bloading=)([^>]*)>/gi, "<img loading='lazy' decoding='async'$1>");
+}
+
+questions.forEach((q)=>{
+  q.q = normalizeImageHtml(q.q);
+  q.c = q.c.map(normalizeImageHtml);
+});
+
+// ================= START EXAM =================
+function startExam(){
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("examSection").classList.remove("hidden");
+
+  correct=[];
+  userAnswers = Array(questions.length).fill(null);
+  shuffle(questions);
+
+  questions.forEach((q)=>{
+    let choices=q.c.map((t,i)=>({t,ok:i===q.a}));
+    shuffle(choices);
+    correct.push(choices.findIndex(x=>x.ok));
+    q.choices = choices;
+  });
+
+  currentPage = 0;
+  showPage(currentPage);
+}
+
+// ================= SHOW PAGE =================
+function showPage(page){
+  let exam=document.getElementById("exam");
+  exam.innerHTML="";
+  let start = page * questionsPerPage;
+  let end = Math.min(start + questionsPerPage, questions.length);
+
+  for(let i=start;i<end;i++){
+    let q = questions[i];
+    exam.innerHTML+=
+    `<div class="question">
+      <p><b>${i+1}. ${q.q}</b></p>
+      ${q.choices.map((x,j)=>
+        `<label class="choice-option">
+          <input type="radio" name="q${i}" value="${j}" ${userAnswers[i]==j?'checked':''} onclick="userAnswers[${i}]=${j}">
+          ${String.fromCharCode(65+j)}. ${x.t}
+        </label><br>`
+      ).join("")}
+    </div>`;
+  }
+
+  let btn = document.getElementById("nextBtn");
+  if(page === totalPages - 1){
+    btn.textContent = "Submit Exam";
+    btn.onclick = submitExam;
+  } else {
+    btn.textContent = "Next Page";
+    btn.onclick = nextPage;
+  }
+}
+
+// ================= NEXT PAGE =================
+function nextPage(){
+  currentPage++;
+  showPage(currentPage);
+}
+
+// ================= SUBMIT EXAM =================
+function submitExam(){
+  let score=0;
+  let output="";
+
+  document.querySelectorAll("input[type=radio]").forEach(r=>r.disabled=true);
+  document.getElementById("nextBtn").disabled = true;
+
+  questions.forEach((q,index)=>{
+    let selectedIndex = userAnswers[index];
+    let correctIndex=correct[index];
+    let correctLetter=String.fromCharCode(65+correctIndex);
+    let chosen=selectedIndex!=null?String.fromCharCode(65+selectedIndex):"No Answer";
+
+    if(selectedIndex!=null && selectedIndex===correctIndex) score++;
+
+    output+=`<p><b>${index+1}. ${q.q}</b><br>
+    Your Answer: ${chosen}<br>
+    Correct Answer: <b>${correctLetter}</b></p>`;
+  });
+
+  document.getElementById("answerContent").innerHTML=output;
+  document.getElementById("finalScore").innerHTML=`Your Score: ${score} / ${questions.length}`;
+  document.getElementById("answerPopup").classList.remove("hidden");
+}
+
+// ================= EXIT =================
+function exitExam(){ 
+  location.reload(); 
+}
+</script>
+</body>
+</html>
