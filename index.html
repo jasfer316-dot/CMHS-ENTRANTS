@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CMHS WALL</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 body{font-family:'Bookman Old Style', serif; background:#D3E7FF; margin:0;}
@@ -69,12 +71,24 @@ a{color:white; font-size:50px;}
   .choice-letter{min-width:1.8em;}
   .choice-content img{width:min(100%, 180px);}
 }
+@media (max-width: 932px) and (orientation: landscape){
+  h2{font-size:30px;}
+  h3{font-size:42px;}
+  p,label,b,li,a{font-size:24px;}
+  input[type="radio"]{width:18px; height:18px; margin-right:8px;}
+  button{font-size:24px; padding:12px 16px; border-radius:24px;}
+  .upload-area{padding:24px; font-size:24px; border-radius:24px;}
+  #answerContent p{font-size:24px;}
+  #finalScore{font-size:24px !important;}
+  .container{margin:8px; padding:12px; border-radius:22px;}
+  .choice-content img{width:min(100%, 150px);}
+}
 </style>
 </head>
 
-<body>
+<body class="py-2 py-md-3">
 
-<div class="container">
+<div class="container px-2 px-sm-3">
 
 <div id="home">
 <h2>📢 Announcement</h2>
@@ -229,12 +243,12 @@ c:["9","10","11","12"],a:2},
     "<img src='images/Screenshots/Screenshot 2026-02-22 161646.png' width='150'> ",
     "<img src='images/Screenshots/Screenshot 2026-02-22 161655.png' width='150'> "
   ],a: 3},
-{q: "What number should replace the question mark?<br><img src='images/Screenshots/Screenshot 2026-02-22 162436.png' style='max-width:100%; height:auto; margin-top:10px;'>",
+{q: "What number should replace the question mark?<br><img src='images/Screenshots/Screenshot 2026-02-22 162436.png' style='max-width100%; height:auto; margin-top:10px;'>",
  c: [
-    "<img src='images/Screenshots/Screenshot 2026-02-22 162840.png' width='150'> ",
-    "<img src='images/Screenshots/Screenshot 2026-02-22 162845.png' width='150'> ",
-    "<img src='images/Screenshots/Screenshot 2026-02-22 162850.png' width='150'> ",
-    "<img src='images/Screenshots/Screenshot 2026-02-22 162854.png' width='150'> "
+    "<img src='images/Screenshots/Screenshot 2026-02-22 162840.png' width='50'> ",
+    "<img src='images/Screenshots/Screenshot 2026-02-22 162845.png' width='50'> ",
+    "<img src='images/Screenshots/Screenshot 2026-02-22 162850.png' width='50'> ",
+    "<img src='images/Screenshots/Screenshot 2026-02-22 162854.png' width='50'> "
   ],a: 2},
 {q: "Work clockwise round the circles to spell out two eight - letter words that are synonyms.Each word commences in a different circle, and you must find the starting point of each.Every letter is used once each and all letters are consecutive.<br><img src='images/Screenshots/Screenshot 2026-02-22 164616.png' style='max-width:100%; height:auto; margin-top:10px;'>",
 c:["PUGNACIOUS","GLORIOUS","Both A & B","Neither"],a:2},
