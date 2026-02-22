@@ -283,7 +283,7 @@ function normalizeImageHtml(html){
   return html
     .replace(
       /<img\b([^>]*?)src=(['"])\s*(?:\.\/)?\/?(Screenshot[^'"]+)\2([^>]*)>/gi,
-      "<img$1src=$2image/Screenshots/$3$2$4>"
+      "<img$1src=$2Capstone/image/Screenshots/$3$2$4>"
     )
     .replace(/<img\b(?![^>]*\bloading=)([^>]*)>/gi, "<img loading='lazy' decoding='async'$1>");
 }
