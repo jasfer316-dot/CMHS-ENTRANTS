@@ -8,16 +8,16 @@
 
 <style>
 body{font-family:'Bookman Old Style', serif; background:#D3E7FF; margin:0;}
-.container{max-width:2000px; margin:20px auto; background:#FFFFFF; padding:20px; border-radius:80px;}
-h2{color:#0b5394;font-size:70px;}
-h3{color:#0b5394;font-size:100px;}
-p,label,b,li,a{font-size:58px;}
-input[type="radio"]{width:30px; height:30px; margin-right:15px; vertical-align:middle; cursor:pointer;}
-button{background:#1A5D97; color:white; padding:25px 25px; font-size:48px; border:none; border-radius:50px; cursor:pointer;}
+.container{max-width:1200px; margin:16px auto; background:#FFFFFF; padding:16px; border-radius:24px;}
+h2{color:#0b5394;font-size:clamp(1.35rem, 2.1vw + 0.7rem, 2.4rem);}
+h3{color:#0b5394;font-size:clamp(1.6rem, 2.8vw + 0.8rem, 3rem);}
+p,label,b,li,a{font-size:clamp(0.95rem, 1.3vw + 0.55rem, 1.3rem);}
+input[type="radio"]{width:20px; height:20px; margin-right:10px; vertical-align:middle; cursor:pointer;}
+button{background:#1A5D97; color:white; padding:12px 18px; font-size:clamp(0.95rem, 1.1vw + 0.55rem, 1.15rem); border:none; border-radius:14px; cursor:pointer;}
 .hidden{display:none;}
-.upload-area{border:8px dashed #0b5394; padding:100px; border-radius:50px; text-align:center; font-size:60px; margin-top:20px;}
-#answerContent p{font-size:52px; margin-bottom:15px;}
-a{color:white; font-size:50px;}
+.upload-area{border:4px dashed #0b5394; padding:24px; border-radius:16px; text-align:center; font-size:clamp(0.95rem, 1.3vw + 0.55rem, 1.3rem); margin-top:16px;}
+#answerContent p{font-size:clamp(0.95rem, 1.3vw + 0.55rem, 1.2rem); margin-bottom:12px;}
+a{color:white; font-size:clamp(0.95rem, 1.1vw + 0.55rem, 1.15rem);}
 .question{margin-bottom:28px;}
 .choice-label{
   display:flex;
@@ -46,42 +46,34 @@ a{color:white; font-size:50px;}
 .choice-content img{
   width:min(100%, 260px);
 }
+#finalScore{
+  font-size:clamp(1rem, 1.7vw + 0.6rem, 1.5rem) !important;
+}
 
 /* RESPONSIVE */
 @media (max-width: 1024px){
-  h2{font-size:50px;}
-  h3{font-size:70px;}
-  p,label,b,li,a{font-size:40px;}
-  input[type="radio"]{width:24px; height:24px; margin-right:12px;}
-  button{font-size:36px; padding:20px 20px; border-radius:40px;}
-  .upload-area{padding:60px; font-size:40px; border-radius:40px;}
-  #answerContent p{font-size:40px;}
-  .choice-content img{width:min(100%, 220px);}
+  .container{max-width:960px;}
+  .choice-content img{width:min(100%, 200px);}
 }
 @media (max-width: 600px){
-  h2{font-size:35px;}
-  h3{font-size:50px;}
-  p,label,b,li,a{font-size:28px;}
-  input[type="radio"]{width:20px; height:20px; margin-right:10px;}
-  button{font-size:28px; padding:15px 15px; border-radius:30px;}
-  .upload-area{padding:40px; font-size:28px; border-radius:30px;}
-  #answerContent p{font-size:28px;}
-  .container{margin:10px; padding:14px; border-radius:28px;}
+  .container{margin:8px; padding:12px; border-radius:16px;}
+  .upload-area{padding:16px;}
   .choice-label{gap:8px;}
   .choice-letter{min-width:1.8em;}
-  .choice-content img{width:min(100%, 180px);}
+  .choice-content img{width:min(100%, 150px);}
+  .upload-area a{
+    padding:10px 18px !important;
+    border-radius:12px !important;
+  }
 }
 @media (max-width: 932px) and (orientation: landscape){
-  h2{font-size:30px;}
-  h3{font-size:42px;}
-  p,label,b,li,a{font-size:24px;}
-  input[type="radio"]{width:18px; height:18px; margin-right:8px;}
-  button{font-size:24px; padding:12px 16px; border-radius:24px;}
-  .upload-area{padding:24px; font-size:24px; border-radius:24px;}
-  #answerContent p{font-size:24px;}
-  #finalScore{font-size:24px !important;}
-  .container{margin:8px; padding:12px; border-radius:22px;}
-  .choice-content img{width:min(100%, 150px);}
+  .container{margin:8px auto; padding:10px;}
+  .upload-area{padding:14px;}
+  .choice-content img{width:min(100%, 130px);}
+  .upload-area a{
+    padding:8px 14px !important;
+    border-radius:10px !important;
+  }
 }
 </style>
 </head>
